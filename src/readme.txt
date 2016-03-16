@@ -1,2 +1,2 @@
-java.net.Url类的应用 
+java.net.Url URL绫荤殑瀛︿範
 http://blog.csdn.net/chenzheng_java/article/details/6248090
