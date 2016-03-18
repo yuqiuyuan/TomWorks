@@ -1,8 +1,7 @@
-package demo1;
+package ex02.pyrmont;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -11,58 +10,19 @@ import java.util.Map;
 import servlet.RequestDispatcher;
 import servlet.ServletInputStream;
 import servlet.ServletRequest;
+import demo1.Request;
 
+public class RequestFacade implements ServletRequest {
 
-public class Request implements ServletRequest {
-	private InputStream inputStream = null;
-	private String uri;
+	private ServletRequest request;
 
-	public Request(InputStream inputStream) {
-		this.inputStream = inputStream;
-	}
-
-	/**
-	 * 将uri从请求中分离出去
-	 */
-	public void parse() {
-		// read a set of characters from the socket
-		StringBuffer request = new StringBuffer(2048);
-		int i;
-		byte[] buffer = new byte[2048];
-		try {
-			i = inputStream.read(buffer);
-		} catch (Exception e) {
-			e.printStackTrace();
-			i = -1;
-		}
-		for (int j = 0; j < i; j++) {
-			request.append((char) buffer[j]);
-		}
-		// System.out.println(request.toString());
-		uri = parseUri(request.toString());
-	}
-
-	public String parseUri(String requestString) {
-		// get uri
-		int index1, index2;
-		index1 = requestString.indexOf(' ');
-		if (index1 != -1) {
-			index2 = requestString.indexOf(' ', index1 + 1);
-			if (index2 > index1) {
-				return requestString.substring(index1 + 1, index2);
-			}
-		}
-		return null;
-	}
-
-	public String geturi() {
-		return uri;
+	public RequestFacade(Request request) {
+		this.request = request;
 	}
 
 	@Override
 	public Object getAttribute(String attribute) {
-		// TODO Auto-generated method stub
-		return null;
+		return request.getAttribute(attribute);
 	}
 
 	@Override

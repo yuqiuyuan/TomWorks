@@ -5,3 +5,9 @@ Java利用ClassLoader将类装入内存，并且在同一应用中，可以有�
 如果启动类装载器能够装载这个类，那么他会首先装载。若果不能，则往下传递。当父类为null时，JVM内置的类(称为:bootstrap class loader)就会充当父类。想想眼下的越来越多的
 使用XML做配置文件或者描述符、部署符。其实这些通过XML文档描述的配置信息最终都要变成java类，其实都是通过ClassLoader来完成的。URLClassLoader是ClassLoader的子类
 它用于从指向JAR文件和目录的URL的搜索路径加载类和资源。也就是说，通过URLClassLoader就可以加载指定jar中的class到内存中。
+
+现在的问题，
+1、eclipse中无法读取html文件
+2、在加载servlet的时候，会用到URLClassLoader方法寻找对应的class，但是这个类值针对jar包的查找的，导致加载servlet的时候类找不到
+3、返回静态资源的时候，不能直接将静态网页资源返回，要按照通信协议返回相应的网页文件。
+
