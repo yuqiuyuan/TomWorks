@@ -12,6 +12,7 @@ import servlet.RequestDispatcher;
 import servlet.ServletInputStream;
 import servlet.ServletRequest;
 
+
 public class Request implements ServletRequest {
 	private InputStream inputStream = null;
 	private String uri;
@@ -59,7 +60,7 @@ public class Request implements ServletRequest {
 	}
 
 	@Override
-	public Object getAttribute() {
+	public Object getAttribute(String attribute) {
 		// TODO Auto-generated method stub
 		return null;
 	}

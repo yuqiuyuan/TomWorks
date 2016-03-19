@@ -12,7 +12,7 @@ public interface ServletRequest {
 	/*
 	 * Implementation of ServletRequest
 	 */
-	public Object getAttribute();
+	public Object getAttribute(String attribute);
 
 	public Enumeration<Object> getAttributeNames();
 

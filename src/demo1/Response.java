@@ -41,6 +41,7 @@ public class Response implements ServletResponse {
 		FileInputStream fis = null;
 		try {
 			File file = new File(Constants.WEB_ROOT, request.geturi());
+			// TODO 这里，将服务器的文件返回给浏览器的时候，不能只返回文件，一定要注意根据第一章讲到的传输协议返回数据。
 			if (file.exists()) {
 				fis = new FileInputStream(file);
 				int ch = fis.read(bytes, 0, BUFFER_SIZE);
@@ -50,6 +51,15 @@ public class Response implements ServletResponse {
 				}
 			} else {
 				// file not found
+				// file = new File(Constants.WEB_ROOT,"error.html");
+				// if (file.exists()) {
+				// fis = new FileInputStream(file);
+				// int ch = fis.read(bytes, 0, BUFFER_SIZE);
+				// while (ch != -1) {
+				// output.write(bytes, 0, ch);
+				// ch = fis.read(bytes, 0, BUFFER_SIZE);
+				// }
+				// }
 				/**
 				 * // file not found String errorMessage =
 				 * "HTTP/1.1 404 File Not Found\r\n" +
