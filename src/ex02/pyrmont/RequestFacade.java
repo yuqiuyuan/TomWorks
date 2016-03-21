@@ -12,9 +12,15 @@ import servlet.ServletInputStream;
 import servlet.ServletRequest;
 import demo1.Request;
 
+/**
+ * 接下来用Requestfacade举例说明，这个类实现RequestServlet
+ * ，保证ServletRequest的接口中的公共方法可以被service调用；该类在实例化的时候，需要引入request对象
+ * 实例化，并且，在该类中，request对象是私有的
+ * ，因此，通过requestfacade实例，不可以调用request，也就避免了parse被使用了。response对象原理是同样的。
+ */
 public class RequestFacade implements ServletRequest {
 
-	private ServletRequest request;
+	private ServletRequest request = null;
 
 	public RequestFacade(Request request) {
 		this.request = request;
