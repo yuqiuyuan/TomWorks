@@ -1,0 +1,4 @@
+1、Request 实例中的parse方法和Response实例中的setStaticResounce方法，因为在容器的编写中不可避免的要被其他类用到，但是又不能把它提供给servlet程序员使用，这里
+使用的解决方案是引用了facade类。（RequestFacade、responseFacade）类。
+接下来用Requestfacade举例说明，这个类实现RequestServlet ，保证ServletRequest的接口中的公共方法可以被service调用；该类在实例化的时候，需要引入request对象
+实例化，并且，在该类中，request对象是私有的，因此，通过requestfacade实例，不可以调用request，也就避免了parse被使用了。response对象原理是同样的。
