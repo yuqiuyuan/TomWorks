@@ -5,23 +5,17 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * HttpConnector类指代一个连接器，职责是创建一个服务器套接字，用来等待HTTP请求。 HttpConnector
- * 类实现了Runnable,所以它能被自己的线程专用。当你启用应用程序，一个 HttpConnector的实例被创建，并且它的run方法被执行。
- */
-public class HttpConnector implements Runnable {
-
+public class HttpConnerctor implements Runnable {
 	boolean stopped;
-	private String scheme = "http";
+	private String scheme;
 
 	public String getScheme() {
 		return scheme;
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		ServerSocket serverSocket = null;
-		int port = 8080;
+		int port = 8081;
 		try {
 			serverSocket = new ServerSocket(port, 1,
 					InetAddress.getByName("127.0.0.1"));
@@ -30,7 +24,7 @@ public class HttpConnector implements Runnable {
 			System.exit(1);
 		}
 		while (!stopped) {
-			// Accept the next incomming connection from the server socket
+			// Accept the next incoming connection from the server socket
 			Socket socket = null;
 			try {
 				socket = serverSocket.accept();
@@ -38,13 +32,9 @@ public class HttpConnector implements Runnable {
 				continue;
 			}
 			// Hand this socket off to an HttpProcessor
-			// TODO deal thoes things after accept socket
-		}
-	}
+			HttpProcessor processor = new HttpProcessor(this);
 
-	public void start() {
-		Thread thread = new Thread(this);
-		thread.start();
+		}
 	}
 
 }
