@@ -32,7 +32,7 @@ public class HttpConnerctor implements Runnable {
 				continue;
 			}
 			// Hand this socket off to an HttpProcessor
-			HttpProcessor processor = new HttpProcessor(this);
+			// HttpProcessor processor = new HttpProcessor(this);
 
 		}
 	}
