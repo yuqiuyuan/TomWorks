@@ -19,7 +19,6 @@ public class HttpConnector implements Runnable {
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		ServerSocket serverSocket = null;
 		int port = 8080;
 		try {
@@ -38,7 +37,9 @@ public class HttpConnector implements Runnable {
 				continue;
 			}
 			// Hand this socket off to an HttpProcessor
-			// TODO deal thoes things after accept socket
+			// Deal thoes things after accept socket
+			HttpProcessor processor = new HttpProcessor(this);
+			processor.process(socket);
 		}
 	}
 
