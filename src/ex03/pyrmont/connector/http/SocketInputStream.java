@@ -71,8 +71,7 @@ public class SocketInputStream extends InputStream {
 	/**
 	 * The string manager for this package.
 	 */
-	protected static StringManager sm = StringManager
-			.getManager(Constants.Package);
+	protected static StringManager sm = StringManager.getManager(Constants.Package);
 
 	// -------------------------------------------------------- Instance
 	// --------------------------------------------------------Variables
@@ -85,9 +84,8 @@ public class SocketInputStream extends InputStream {
 	 * @throws IOException
 	 */
 
-	public void readRequestLine(HttpRequestLine requestLine)
- throws IOException {
-//		Recycling check
+	public void readRequestLine(HttpRequestLine requestLine) throws IOException {
+		// Recycling check
 		if (requestLine.methodEnd != 0) {
 			requestLine.recycle();
 			// Checking for a blank line
@@ -100,8 +98,7 @@ public class SocketInputStream extends InputStream {
 				}
 			} while ((chr == CR) || (chr == LF));
 			if (chr == -1) {
-				throw new EOFException(
-						sm.getString("requestStream.readline.error"));
+				throw new EOFException(sm.getString("requestStream.readline.error"));
 			}
 			pos--;
 
@@ -115,21 +112,90 @@ public class SocketInputStream extends InputStream {
 				if (readCount >= maxRead) {
 					if ((2 * maxRead) <= HttpRequestLine.MAX_METHOD_SIZE) {
 						char[] newBuffer = new char[2 * maxRead];
-						System.arraycopy(requestLine.method, 0, newBuffer, 0,
-								maxRead);
+						System.arraycopy(requestLine.method, 0, newBuffer, 0, maxRead);
 						requestLine.method = newBuffer;
 						maxRead = requestLine.method.length;
 					} else {
-						throw new IOException(
-								sm.getString("requestStream.readline.error"));
+						throw new IOException(sm.getString("requestStream.readline.error"));
 					}
 				}
 				// We're at the end of the internal buffer
 				if (pos >= count) {
 					int val = read();
 					if (val == -1) {
-						throw new IOException(
-								sm.getString("requestStream.readline.error"));
+						throw new IOException(sm.getString("requestStream.readline.error"));
+					}
+					pos = 0;
+					readStart = 0;
+				}
+				if (buf[pos] == SP) {
+					space = true;
+				}
+				requestLine.method[readCount] = (char) buf[pos];
+				readCount++;
+				pos++;
+			}
+			requestLine.methodEnd = readCount - 1;
+			// Reading URI
+			maxRead = requestLine.uri.length;
+			readStart = pos;
+			readCount = 0;
+			space = false;
+			boolean eol = false;
+			while (!space) {
+				// if the buffer is full,extend it
+				if (readCount >= maxRead) {
+					if ((2 * maxRead) <= HttpRequestLine.MAX_URI_SIZE) {
+						char[] newBuffer = new char[2 * maxRead];
+						System.arraycopy(requestLine.uri, 0, newBuffer, 0, maxRead);
+						requestLine.uri = newBuffer;
+						maxRead = requestLine.uri.length;
+					} else {
+						throw new IOException(sm.getString("requestStream.readline.toolong"));
+					}
+				}
+				// We're at the end of the internal buffer.
+				if (pos >= count) {
+					int val = read();
+					if (val == -1) {
+						throw new IOException(sm.getString("requestStream.readline.error"));
+					}
+					pos = 0;
+					readStart = 0;
+				}
+				if (buf[pos] == SP) {
+					space = true;
+				} else if ((buf[pos] == CR) || (buf[pos] == LF)) {
+					// HTTP/0.9 style request
+					eol = true;
+					space = true;
+				}
+				requestLine.uri[readCount] = (char) buf[pos];
+				readCount++;
+				pos++;
+			}
+			requestLine.uriEnd = readCount - 1;
+			// Reading protocol
+			maxRead = requestLine.protocol.length;
+			readStart = pos;
+			readCount = 0;
+			while (!eol) {
+				// if the buffer is full,extend it
+				if (readCount >= maxRead) {
+					if ((2 * maxRead) <= HttpRequestLine.MAX_METHOD_SIZE) {
+						char[] newBuffer = new char[2 * maxRead];
+						System.arraycopy(requestLine.method, 0, newBuffer, 0, maxRead);
+						requestLine.method = newBuffer;
+						maxRead = requestLine.method.length;
+					} else {
+						throw new IOException(sm.getString("requestStream.readline.toolong"));
+					}
+				}
+				// We're at the end of the internal buffer
+				if (pos >= count) {
+					int val = read();
+					if (val == -1) {
+						throw new IOException(sm.getString("requestStream.readline.error"));
 					}
 					pos = 0;
 					readStart = 0;
@@ -148,6 +214,7 @@ public class SocketInputStream extends InputStream {
 			readCount = 0;
 			space = false;
 		}
+
 	}
 
 	@Override
