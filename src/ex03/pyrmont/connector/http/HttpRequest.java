@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,31 +11,58 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("rawtypes")
 public class HttpRequest implements HttpServletRequest {
 
-	private String contentType;
-	private int contentLength;
-	private InetAddress inetAddress;
-	private InputStream input;
-	private String method;
-	private String protocol;
-	private String queryString;
-	private String requestURI;
+	//	private String contentType;
+	//	private int contentLength;
+	//	private InetAddress inetAddress;
+	@SuppressWarnings("unused")
+	private InputStream	input;
+	//	private String method;
+	//	private String protocol;
+	//	private String queryString;
+	//	private String requestURI;
+	//
+	//	private String serverName;
+	//	private int serverPort;
+	//	private Socket socket;
+	//	private boolean requestedSessionCookie;
+	//	private boolean reqeustedSessionId;
+	//	private boolean requestedSessionURL;
 
-	private String serverName;
-	private int serverPort;
-	private Socket socket;
-	private boolean requestedSessionCookie;
-	private boolean reqeustedSessionId;
-	private boolean requestedSessionURL;
 
+	public HttpRequest(InputStream input) {
+		this.input = input;
+	}
+
+	/**
+	 * The HTTP header associated with this Request,kryed by name.
+	 * The values are ArrayLists of the corresponding header values.
+	 */
+	protected HashMap	headers	= new HashMap();
+
+	@SuppressWarnings("unchecked")
+	public void addHeader(String name, String value)
+	{
+		name = name.toLowerCase();
+		synchronized (headers)
+		{
+			ArrayList values = (ArrayList) headers.get(name);
+			if (values == null)
+			{
+				values = new ArrayList();
+				headers.put(name, values);
+			}
+			values.add(value);
+		}
+	}
 	/**
 	 * The request attributes for this request.
 	 */

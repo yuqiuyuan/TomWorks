@@ -6,8 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * HttpConnector类指代一个连接器，职责是创建一个服务器套接字，用来等待HTTP请求。 HttpConnector
- * 类实现了Runnable,所以它能被自己的线程专用。当你启用应用程序，一个 HttpConnector的实例被创建，并且它的run方法被执行。
+ *
  */
 public class HttpConnector implements Runnable {
 

@@ -3,7 +3,6 @@ package ex03.pyrmont.connector.http;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.naming.Constants;
 import org.apache.naming.StringManager;
 
@@ -150,6 +149,10 @@ public class SocketInputStream extends InputStream {
 		}
 	}
 
+	public void readHeader(HttpHeader header)
+	{
+		//	TODO
+	}
 	@Override
 	public int read() throws IOException {
 		// TODO Auto-generated method stub
