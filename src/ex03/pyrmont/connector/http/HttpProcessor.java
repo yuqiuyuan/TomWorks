@@ -1,19 +1,36 @@
 package ex03.pyrmont.connector.http;
 
+/*this class used to be called HttpServer*/
+/**
+ * HttpProcessor ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½connectorï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½HTTPï¿½ï¿½ï¿½ï¿½ï¿½×½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é£º 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½HttpRequestï¿½ï¿½ï¿½ï¿½
+ * 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½HttpResponseï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½HttpRequestï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½Ðºï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½HttpRequestï¿½ï¿½ï¿½ï¿½
+ * 4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½HttpRequestï¿½ï¿½HttpResponseï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ServletProcessorï¿½ï¿½ï¿½ï¿½StaticResourceProcessor
+ * ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ä£ï¿½ServletProcessorï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½servlet
+ * ï¿½ï¿½serviceï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½StaticResourceProcessorï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+ * 
+ * */
+
+import java.io.OutputStream;
 import java.net.Socket;
+
+import javax.servlet.ServletException;
+
+import org.apache.tomcat.util.res.StringManager;
+
+import ex03.pyrmont.ServletProcessor;
+import ex03.pyrmont.StaticResourceProcessor;
 
 /*this class used to be called HttpServer*/
 /**
- * HttpProcessor ´¦ÀíÆ÷£¬ÔÚconnectorÖÐ±»´´½¨£¬½ÓÊÜÇ°À´µÄHTTPÇëÇóÌ×½Ó×Ö£¬×öÏÂÃæµÄÊÂÇé£º 1¡¢´´½¨Ò»¸öHttpRequest¶ÔÏó¡£
- * 2¡¢´´½¨Ò»¸öHttpResponse¶ÔÏó¡£ 3¡¢½âÎöHttpRequestÇëÇóµÄµÚÒ»ÐÐºÍÍ·²¿£¬²¢·Åµ½HttpRequest¶ÔÏó¡£
- * 4¡¢½âÎöHttpRequestºÍHttpResponse¶ÔÏóµ½Ò»¸öServletProcessor»òÕßStaticResourceProcessor
- * ¡£ÏëµÚ¶þÕÂÖÐËµµÄ£¬ServletProcessorµ÷ÓÃ±»ÇëÇóµÄservlet
- * µÄservice·½·¨£¬¶øStaticResourceProcessor·¢ËÍÒ»¸ö¾²Ì¬×ÊÔ´µÄÄÚÈÝ¡£
- * 
- * */
+ * it's used to created request and response.
+ */
 public class HttpProcessor {
-
 	private HttpConnector connector = null;
+	private HttpRequest request;
+	private HttpResponse response;
+
+	protected StringManager sm = StringManager.getManager("ex03.pyrmont.connector.http");
+
 	public HttpProcessor(HttpConnector connector) {
 		this.connector = connector;
 	}
@@ -22,6 +39,67 @@ public class HttpProcessor {
 	 * The HttpConnector with which this processor is associated.
 	 */
 	public void process(Socket socket) {
+		SocketInputStream input;
+		OutputStream output = null;
+		try {
+			input = new SocketInputStream(socket.getInputStream(), 2048);
+			output = socket.getOutputStream();
+			// create HttpRequest object and parse
+			request = new HttpRequest(input);
+			// create HttpResponse object
+			response = new HttpResponse(output);
+			response.setRequest(request);
+			response.setHeader("Server", "Pyrmont Servlet Container");
+			// TODO
+			parseRequest(input, output);
+			// TODO
+			parseHeaders(input);
+			// check if this is a request for a servlet or a static resource
+			// a request for a servlet begins with "/servlet/"
+			if (request.getRequestURI().startsWith("/servlet/")) {
+				ServletProcessor processor = new ServletProcessor();
+				processor.process(request, response);
+			} else {
+				StaticResourceProcessor processor = new StaticResourceProcessor();
+				processor.process(request, response);
+			}
+			// Close the socket
+			socket.close();
+			// no shutdown for this application
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	/**
+	 * This method is the simplified version of the similar method in
+	 * org.apache.catalina.connector.http.HttpProcessor. However, this method
+	 * only parse some "easy" headers ,such as "cookie","content-length",and
+	 * "content-type",and ignore other headers.
+	 * 
+	 * @param input
+	 * @throws ServletException
+	 */
+	private void parseHeaders(SocketInputStream input) throws ServletException {
+		// TODO Auto-generated method stub
+		while (true) {
+			HttpHeader header = new HttpHeader();
+			// reader the next header
+			// input.readHeader(header);
+			if (header.nameEnd == 0) {
+				if (header.valueEnd == 0) {
+					return;
+				} else {
+					throw new ServletException(sm.getString("httpProcessor.parseHeaders.colon"));
+				}
+			}
+			String name = new String(header.name, 0, header.nameEnd);
+			String value = new String(header.value, 0, header.valueEnd);
+
+		}
+	}
+
+	private void parseRequest(SocketInputStream input, OutputStream output) {
+		// TODO Auto-generated method stub
 	}
 }

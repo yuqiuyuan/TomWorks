@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,23 +18,48 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("rawtypes")
 public class HttpRequest implements HttpServletRequest {
 
-	private String contentType;
-	private int contentLength;
-	private InetAddress inetAddress;
+	// private String contentType;
+	// private int contentLength;
+	// private InetAddress inetAddress;
+	@SuppressWarnings("unused")
 	private InputStream input;
-	private String method;
-	private String protocol;
-	private String queryString;
-	private String requestURI;
+	// private String method;
+	// private String protocol;
+	// private String queryString;
+	// private String requestURI;
+	//
+	// private String serverName;
+	// private int serverPort;
+	// private Socket socket;
+	// private boolean requestedSessionCookie;
+	// private boolean reqeustedSessionId;
+	// private boolean requestedSessionURL;
 
-	private String serverName;
-	private int serverPort;
-	private Socket socket;
-	private boolean requestedSessionCookie;
-	private boolean reqeustedSessionId;
-	private boolean requestedSessionURL;
+	public HttpRequest(InputStream input) {
+		this.input = input;
+	}
+
+	/**
+	 * The HTTP header associated with this Request,kryed by name. The values
+	 * are ArrayLists of the corresponding header values.
+	 */
+	protected HashMap headers = new HashMap();
+
+	@SuppressWarnings("unchecked")
+	public void addHeader(String name, String value) {
+		name = name.toLowerCase();
+		synchronized (headers) {
+			ArrayList values = (ArrayList) headers.get(name);
+			if (values == null) {
+				values = new ArrayList();
+				headers.put(name, values);
+			}
+			values.add(value);
+		}
+	}
 
 	/**
 	 * The request attributes for this request.
@@ -65,8 +88,7 @@ public class HttpRequest implements HttpServletRequest {
 	/**
 	 * The set of SimpleDateFormat format to use in getDateHeader().
 	 */
-	protected SimpleDateFormat formats[] = {
-			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
+	protected SimpleDateFormat formats[] = { new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
 			new SimpleDateFormat("EEEEEE,dd-MMM-yy HH:mm:ss zzz", Locale.US),
 			new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US) };
 
@@ -218,8 +240,7 @@ public class HttpRequest implements HttpServletRequest {
 	}
 
 	@Override
-	public void setCharacterEncoding(String arg0)
-			throws UnsupportedEncodingException {
+	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 
 	}
