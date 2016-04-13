@@ -4,52 +4,55 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 /**
-<<<<<<< HEAD
- * HttpConnectorÀàÖ¸´úÒ»¸öÁ¬½ÓÆ÷£¬Ö°ÔðÊÇ´´½¨Ò»¸ö·þÎñÆ÷Ì×½Ó×Ö£¬ÓÃÀ´µÈ´ýHTTPÇëÇó¡£ HttpConnector
- * ÀàÊµÏÖÁËRunnable,ËùÒÔËüÄÜ±»×Ô¼ºµÄÏß³Ì×¨ÓÃ¡£µ±ÄãÆôÓÃÓ¦ÓÃ³ÌÐò£¬Ò»¸ö HttpConnectorµÄÊµÀý±»´´½¨£¬²¢ÇÒËüµÄrun·½·¨±»Ö´ÐÐ¡£
-=======
+ * HttpConnectorï¿½ï¿½Ö¸ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½HTTPï¿½ï¿½ï¿½ï¿½ HttpConnector
+ * ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Runnable,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü±ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ß³ï¿½×¨ï¿½Ã¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ HttpConnectorï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½runï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð¡ï¿½
  *
->>>>>>> branch 'master' of https://github.com/yuqiuyuan/TomWorks.git
  */
-public class HttpConnector implements Runnable {
+public class HttpConnector implements Runnable
+{
+	boolean			stopped;
+	private String	scheme	= "http";
 
-	boolean stopped;
-	private String scheme = "http";
-
-	public String getScheme() {
+	public String getScheme()
+	{
 		return scheme;
 	}
+
 	@Override
-	public void run() {
+	public void run()
+	{
 		ServerSocket serverSocket = null;
-		int port = 8080;
-		try {
-			serverSocket = new ServerSocket(port, 1,
-					InetAddress.getByName("127.0.0.1"));
-		} catch (IOException e) {
+		int port = 8089;
+		try
+		{
+			serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 			System.exit(1);
 		}
-		while (!stopped) {
+		while (!stopped)
+		{
 			// Accept the next incomming connection from the server socket
 			Socket socket = null;
-			try {
+			try
+			{
 				socket = serverSocket.accept();
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				continue;
 			}
 			// Hand this socket off to an HttpProcessor
 			// Deal thoes things after accept socket
-			HttpProcessor processor = new HttpProcessor(this);
+			HttpProcessor processor = new HttpProcessor();
 			processor.process(socket);
 		}
 	}
 
-	public void start() {
+	public void start()
+	{
 		Thread thread = new Thread(this);
 		thread.start();
 	}
-
 }

@@ -11,16 +11,14 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 @SuppressWarnings("rawtypes")
-public class HttpRequest implements HttpServletRequest {
-
+public class HttpRequest implements HttpServletRequest
+{
 	// private String contentType;
 	// private int contentLength;
 	// private InetAddress inetAddress;
@@ -38,7 +36,8 @@ public class HttpRequest implements HttpServletRequest {
 	// private boolean reqeustedSessionId;
 	// private boolean requestedSessionURL;
 
-	public HttpRequest(InputStream input) {
+	public HttpRequest(InputStream input)
+	{
 		this.input = input;
 	}
 
@@ -49,11 +48,14 @@ public class HttpRequest implements HttpServletRequest {
 	protected HashMap headers = new HashMap();
 
 	@SuppressWarnings("unchecked")
-	public void addHeader(String name, String value) {
+	public void addHeader(String name, String value)
+	{
 		name = name.toLowerCase();
-		synchronized (headers) {
+		synchronized (headers)
+		{
 			ArrayList values = (ArrayList) headers.get(name);
-			if (values == null) {
+			if (values == null)
+			{
 				values = new ArrayList();
 				headers.put(name, values);
 			}
@@ -61,338 +63,404 @@ public class HttpRequest implements HttpServletRequest {
 		}
 	}
 
+	protected void setQueryString(String queryString)
+	{
+		//		TODO
+	}
+
+	protected void setRequestSessionID(String sessionId)
+	{
+		//		TODO
+	}
+
+	protected void setRequestSessionURL(boolean b)
+	{
+		//		TODO
+	}
+
+	protected void setProtocol()
+	{
+		//		TODO
+	}
+
+	protected void setRequestURI(String uri)
+	{
+	}
+
 	/**
 	 * The request attributes for this request.
 	 */
-	protected HashMap attribute = new HashMap();
+	protected HashMap			attribute		= new HashMap();
 	/**
 	 * The authorization credentials sent with this Request.
 	 */
-	protected String authorization = null;
+	protected String			authorization	= null;
 	/**
 	 * The context path for this request.
 	 */
-	protected String contextPath = "";
-
+	protected String			contextPath		= "";
 	/**
 	 * The set of cookie associated with this Request.
 	 */
-	protected ArrayList cookies = new ArrayList();
-
+	protected ArrayList			cookies			= new ArrayList();
 	/**
 	 * An empty collection to use for returning empty Enumerations.Do not add
 	 * any elements to this collection!
 	 */
-	protected static ArrayList empty = new ArrayList();
-
+	protected static ArrayList	empty			= new ArrayList();
 	/**
 	 * The set of SimpleDateFormat format to use in getDateHeader().
 	 */
-	protected SimpleDateFormat formats[] = { new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
-			new SimpleDateFormat("EEEEEE,dd-MMM-yy HH:mm:ss zzz", Locale.US),
+	protected SimpleDateFormat	formats[]		= { new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US), new SimpleDateFormat("EEEEEE,dd-MMM-yy HH:mm:ss zzz", Locale.US),
 			new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US) };
 
 	/**
 	 * The HTTP headers associated with this Request,keyed by name.The values a
 	 */
 	@Override
-	public Object getAttribute(String arg0) {
+	public Object getAttribute(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Enumeration getAttributeNames() {
+	public Enumeration getAttributeNames()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getCharacterEncoding() {
+	public String getCharacterEncoding()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int getContentLength() {
+	public int getContentLength()
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public String getContentType() {
+	public String getContentType()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ServletInputStream getInputStream() throws IOException {
+	public ServletInputStream getInputStream() throws IOException
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Locale getLocale() {
+	public Locale getLocale()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Enumeration getLocales() {
+	public Enumeration getLocales()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getParameter(String arg0) {
+	public String getParameter(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map getParameterMap() {
+	public Map getParameterMap()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Enumeration getParameterNames() {
+	public Enumeration getParameterNames()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String[] getParameterValues(String arg0) {
+	public String[] getParameterValues(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getProtocol() {
+	public String getProtocol()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public BufferedReader getReader() throws IOException {
+	public BufferedReader getReader() throws IOException
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getRealPath(String arg0) {
+	public String getRealPath(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getRemoteAddr() {
+	public String getRemoteAddr()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getRemoteHost() {
+	public String getRemoteHost()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public RequestDispatcher getRequestDispatcher(String arg0) {
+	public RequestDispatcher getRequestDispatcher(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getScheme() {
+	public String getScheme()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getServerName() {
+	public String getServerName()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int getServerPort() {
+	public int getServerPort()
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean isSecure() {
+	public boolean isSecure()
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void removeAttribute(String arg0) {
+	public void removeAttribute(String arg0)
+	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void setAttribute(String arg0, Object arg1) {
+	public void setAttribute(String arg0, Object arg1)
+	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
+	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException
+	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public String getAuthType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getContextPath() {
+	public String getAuthType()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Cookie[] getCookies() {
+	public String getContextPath()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public long getDateHeader(String arg0) {
+	public Cookie[] getCookies()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getDateHeader(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public String getHeader(String arg0) {
+	public String getHeader(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Enumeration getHeaderNames() {
+	public Enumeration getHeaderNames()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Enumeration getHeaders(String arg0) {
+	public Enumeration getHeaders(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int getIntHeader(String arg0) {
+	public int getIntHeader(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public String getMethod() {
+	public String getMethod()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getPathInfo() {
+	public String getPathInfo()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getPathTranslated() {
+	public String getPathTranslated()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getQueryString() {
+	public String getQueryString()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getRemoteUser() {
+	public String getRemoteUser()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getRequestURI() {
+	public String getRequestURI()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public StringBuffer getRequestURL() {
+	public StringBuffer getRequestURL()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getRequestedSessionId() {
+	public String getRequestedSessionId()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getServletPath() {
+	public String getServletPath()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public HttpSession getSession() {
+	public HttpSession getSession()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public HttpSession getSession(boolean arg0) {
+	public HttpSession getSession(boolean arg0)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Principal getUserPrincipal() {
+	public Principal getUserPrincipal()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isRequestedSessionIdFromCookie() {
+	public boolean isRequestedSessionIdFromCookie()
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isRequestedSessionIdFromURL() {
+	public boolean isRequestedSessionIdFromURL()
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isRequestedSessionIdFromUrl() {
+	public boolean isRequestedSessionIdFromUrl()
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isRequestedSessionIdValid() {
+	public boolean isRequestedSessionIdValid()
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isUserInRole(String arg0) {
+	public boolean isUserInRole(String arg0)
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }
