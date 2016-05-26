@@ -2,38 +2,43 @@ package demo1;
 
 import java.io.File;
 import java.io.IOException;
-
-public class FileDemo {
-	public static void main(String[] args) {
+public class FileDemo
+{
+	public static void main(String[] args)
+	{
 		FileDemo fileD = new FileDemo();
-		try {
-			System.out.println("µ±Ç°ÀàµÄ¼ÓÔØÄ¿Â¼" + fileD.getFileDirectory());
-			System.out.println("µ±Ç°ÀàËùÔÚµÄ¹¤³ÌÄ¿Â¼" + fileD.getFileDirectory2());
-			System.out.println("ÏîÄ¿Â·¾¶Îª£º" + fileD.getFileDirectory3() + "");
-
-		} catch (Exception e) {
+		try
+		{
+			System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¿Â¼" + fileD.getFileDirectory());
+			System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ÚµÄ¹ï¿½ï¿½ï¿½Ä¿Â¼" + fileD.getFileDirectory2());
+			System.out.println("ï¿½ï¿½Ä¿Â·ï¿½ï¿½Îªï¿½ï¿½" + fileD.getFileDirectory3() + "");
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°ÀàµÄ¼ÓÔØÄ¿Â¼
+	 * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¿Â¼
 	 */
-	public File getFileDirectory() {
+	public File getFileDirectory()
+	{
 		File file = new File(this.getClass().getResource("").getPath());
 		return file;
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°ÀàËùÔÚµÄ¹¤³ÌÂ·¾¶
+	 * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ÚµÄ¹ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 */
-	public File getFileDirectory2() {
+	public File getFileDirectory2()
+	{
 		File file = new File(this.getClass().getResource("/").getPath());
 		return file;
 	}
 
-	public String getFileDirectory3() throws IOException {
-		File directory = new File("");// ²ÎÊýÎª¿Õ
+	public String getFileDirectory3() throws IOException
+	{
+		File directory = new File("");// ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½
 		String courseFile = directory.getCanonicalPath();
 		return courseFile;
 	}

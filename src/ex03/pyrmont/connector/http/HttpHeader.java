@@ -6,11 +6,11 @@ public class HttpHeader
 	public static final int	INITIAL_VALUE_SIZE	= 64;
 	public static final int	MAX_NAME_SIZE		= 128;
 	public static final int	MAX_VALUE_SIZE		= 4096;
+	public char[]			name;
+	public int				nameEnd;
+	public char[]			value;
+	public int				valueEnd;
 
-	public char[]	name;
-	public int	nameEnd;
-	public char[]	value;
-	public int	valueEnd;
 	public HttpHeader()
 	{
 		this(new char[INITIAL_NAME_SIZE], 0, new char[INITIAL_VALUE_SIZE], 0);
@@ -24,4 +24,7 @@ public class HttpHeader
 		this.valueEnd = valueEnd;
 	}
 
+	public void recycle()
+	{
+	}
 }
